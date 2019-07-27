@@ -59,8 +59,6 @@ import Cartao from './services/cartoes'
 export default {
 
 
-
-
   data(){
     return{
       solicitacao: {
@@ -78,6 +76,7 @@ export default {
       this.cartoes = resposta.data
     })
   },
+
 
   methods:{
     gerar(){
