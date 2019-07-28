@@ -114,7 +114,7 @@ export default {
     pagar(){
       Cartao.pagarCompra(this.pagamento).then(resposta=> {
       this.transacao = resposta.data
-      this.retornoMessage = `${this.transacao.status}. Seu saldo é: ${this.transacao.saldo}.`
+      this.retornoMessage = `${this.transacao.status}`
        this.pagamento = {}
 
        })               
