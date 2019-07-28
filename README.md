@@ -1,4 +1,4 @@
-##Api para geração de cartão crédito, validação de dados dos cartões gerados e transação de compras.
+### Api para geração de cartão crédito, validação de dados dos cartões gerados e transação de compras.
 
 repositório do frontend vue:https://github.com/davidweezing/credprepay-vuejs repositório do backend Java Sprint boot: https://github.com/davidweezing/credprepay-front (era pra ser back não front, nem prestei atenção... ^^ )
 
@@ -8,13 +8,13 @@ A api tem o swagger-ui para ver e testar as rotas: link: https://credprepay.hero
 
 Tecnologias usadas: ->Frontend - VueJS ->Backend -JAVA + Spring Boot
 
-Instalação da API.
+### Instalação da API.
 
 Faça o clone do projeto para seu computador e execute. O maven se encarregará de baixar todas as dependências. Banco de dados POSTGRE é gerado automaticamente pela aplicação. O arquivo atributes.propreties contem o endereço da api, caso queira basta istalar o postgres e seu computador e colocar os dados do seu servidor local. Requitos: Java 8
 
 Instalação do Frontend: Faça o clone do projeto para sua máquina e em seguida digite os seguintes comandos yarn: yarn install (instala as dependencias presentes no packge.json) yarn serve (executa a aplicação) yarn build (builda para produção)
 
-Rotas:
+### Rotas:
 
 get: /cartao - Retorna todos os cartões cadastrado /cartao/{id} - Retorna um cartão a partir do id /cartao/{numero} = Retorna um cartão a partir do numero informado
 
