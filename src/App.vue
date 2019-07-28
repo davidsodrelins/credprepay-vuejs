@@ -40,17 +40,28 @@
 
 <div class="informacao" v-show="retornoMessage">{{retornoMessage}}</div>
 
+
+
+<div class="formCompra">
+      <form @submit.prevent="pagar" >
+        <input type="text" placeholder="Estabelecimento" id="estabelecimeto" v-model="pagamento.estabelecimento">
+        <input type="text" placeholder="Numero de Cartao" id="compraNumero" v-model="pagamento.numeroCartao">
+        <input type="text" placeholder="Validade" id="compraValidade" v-model="pagamento.validade">
+        <input type="text" placeholder="CVV" id="compraCVV" v-model="pagamento.cvv">
+        <input type="text" placeholder="Senha" id="compraSenha" v-model="pagamento.senha">
+        <input type="number" step="0.010" placeholder="Preço a pagar" id="compraValor" v-model="pagamento.valorCompra">
+        <input type="submit" class="btnPagar" id="btnSolicita" value="Pagar">
+      </form>
+    </div>
 </div>
 
 </template>
 
 <script>
-
+//dá para componentizar muito mais cada item desse!!! 
 import Cartao from './services/cartoes'
 
 export default {
-
-
   data(){
     return{
       solicitacao: {
@@ -59,7 +70,17 @@ export default {
       },
       cartoes:[],
       cartao: {},
-      retornoMessage: ''
+      transacao: {},
+      retornoMessage: '',
+      pagamento:{
+        estabelecimento: '',
+        valorCompra: '',
+        cvv:'',
+        validade: '',
+        numeroCartao: '',
+        senha: ''
+
+      }
     }
   },
 
@@ -77,6 +98,12 @@ export default {
           v = v.replace(/\.$/, ""); // Remove o ponto se estiver sobrando
           return v;
       },
+
+       maskMMAA(v){
+          v = v.replace(/(\d{2})/g, "$1/"); // Coloca uma barra a cada 2 caracteres
+          return v;
+      },
+      
     gerar(){
       Cartao.gerarCartao(this.solicitacao).then(resposta=> {
         this.solicitacao = {}
@@ -85,6 +112,22 @@ export default {
         this.retornoMessage = `Parabéns ${this.cartao.titular.split(' ')[0]}, 
         seu cartão de crédito pré-pago foi gerado! 
          O saldo disponível para compras é de R$ ${this.cartao.saldo} e senha é: ${this.cartao.senha}.`
+       })
+    },
+    pagar(){
+      Cartao.pagarCompra(this.pagamento).then(resposta=> {
+
+        this.pagamento = {}
+        this.transacao = resposta.data
+        if(this.transacao.autorizado == 'false'){
+            this.retornoMessage = `${this.transacao.status}. Seu saldo é: ${this.transacao.saldo}.`
+        }else{
+             var respostaaux = this.transacao.status.split("#");
+             this.retornoMessage = "ERRO!";
+                for (var i = 0; i < respostaaux.length - 1; i++) {
+                    this.retornoMessage = this.retornoMessage + "\n"+ respostaaux[i];
+                }
+        }
        })
     }
   }
@@ -132,6 +175,29 @@ body{
   border-radius: 10px;
 }
 
+.formCompra{
+  display: flex;
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 610px;
+  width: 100%;
+  background: rgba(201, 73, 63, 0.5);
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.formCompra input{
+  
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  position: relative;
+  margin-right: 50px;
+  padding: 20px;
+}
+
 .informacao{
   display: flex;
   position: absolute;
@@ -177,12 +243,27 @@ body{
 
 }
 
+#btnPagar{
+  display: inline;
+  background-color:blue;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  border-radius: 5px;
+  padding: 6px;
+  text-transform: uppercase;
+  font-size: 18px;
+  cursor: pointer;
+  top: 20%;
+
+}
+
 
 
 .formNovoCartao input{
   position: relative;
   margin-right: 35px;
   padding: 30px;
+  
 
 }
 

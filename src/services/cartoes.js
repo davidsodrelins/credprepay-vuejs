@@ -8,6 +8,10 @@ export default{
 
   gerarCartao: (solicitacao) => {
     return http.post('cartao', solicitacao);
+  },
+
+  pagarCompra: (pagamento) => {
+    return http.post('transacao', pagamento);
   }
 
 }
