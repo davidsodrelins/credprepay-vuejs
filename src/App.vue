@@ -38,7 +38,7 @@
 
 
 
-<div class="informacao" v-show="retornoMessage">{{retornoMessage}}</div>
+<div class="informacao" >{{retornoMessage}}</div>
 
 
 
@@ -71,7 +71,7 @@ export default {
       cartoes:[],
       cartao: {},
       transacao: {},
-      retornoMessage: '',
+      retornoMessage: 'O cartão pré pago é uma excelente forma de pagamento! Solicite agora!',
       pagamento:{
         estabelecimento: '',
         valorCompra: '',
@@ -115,7 +115,7 @@ export default {
        })
     },
     pagar(){
-       
+      this.retornoMessage = 'Aguarde...'
       Cartao.pagarCompra(this.pagamento).then(resposta=> {
 
         this.pagamento = {}
@@ -123,7 +123,7 @@ export default {
         if(this.transacao.autorizado == 'true'){
             this.retornoMessage = `${this.transacao.status}. Seu saldo é: ${this.transacao.saldo}.`
         }else{
-             var respostaaux = this.transacao.status.split("#");
+             var respostaaux = this.transacao.status.split("#")
                 for (var i = 0; i < respostaaux.length - 1; i++) {
                     this.retornoMessage = this.retornoMessage + "\n"+ respostaaux[i];
                 }
