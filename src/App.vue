@@ -115,11 +115,12 @@ export default {
        })
     },
     pagar(){
+       
       Cartao.pagarCompra(this.pagamento).then(resposta=> {
 
         this.pagamento = {}
         this.transacao = resposta.data
-        if(this.transacao.autorizado == 'false'){
+        if(this.transacao.autorizado == 'true'){
             this.retornoMessage = `${this.transacao.status}. Seu saldo é: ${this.transacao.saldo}.`
         }else{
              var respostaaux = this.transacao.status.split("#");
