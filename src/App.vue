@@ -120,7 +120,11 @@ export default {
 
         this.pagamento = {}
         this.transacao = resposta.data
-        if(this.transacao.autorizado == 'true'){
+       
+       
+       })
+       
+       if(this.transacao.autorizado == 'true'){
             this.retornoMessage = `${this.transacao.status}. Seu saldo é: ${this.transacao.saldo}.`
         }else{
              var respostaaux = this.transacao.status.split("#")
@@ -128,7 +132,6 @@ export default {
                     this.retornoMessage = this.retornoMessage + "\n"+ respostaaux[i];
                 }
         }
-       })
     }
   }
 
