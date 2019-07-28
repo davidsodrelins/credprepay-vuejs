@@ -112,16 +112,13 @@ export default {
        })
     },
     pagar(){
-      this.retornoMessage = 'Aguarde...'
       Cartao.pagarCompra(this.pagamento).then(resposta=> {
+      this.transacao = resposta.data
+      this.retornoMessage = `${this.transacao.status}. Seu saldo é: ${this.transacao.saldo}.`
+       this.pagamento = {}
 
-        this.pagamento = {}
-       this.transacao = resposta.data
-       this.retornoMessage = `${this.transacao.status}` 
-       if(this.transacao.autorizacao){
-               this.retornoMessage = `Seu saldo é: ${this.transacao.saldo}.`       
        })               
-        }
+        
     }
   }
 
