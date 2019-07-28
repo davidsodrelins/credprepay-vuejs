@@ -99,10 +99,7 @@ export default {
           return v;
       },
 
-       maskMMAA(v){
-          v = v.replace(/(\d{2})/g, "$1/"); // Coloca uma barra a cada 2 caracteres
-          return v;
-      },
+     
       
     gerar(){
       Cartao.gerarCartao(this.solicitacao).then(resposta=> {
@@ -119,18 +116,11 @@ export default {
       Cartao.pagarCompra(this.pagamento).then(resposta=> {
 
         this.pagamento = {}
-        this.transacao = resposta.data
-       
-       
-       })
-       
-       if(this.transacao.autorizado == 'true'){
-            this.retornoMessage = `${this.transacao.status}. Seu saldo é: ${this.transacao.saldo}.`
-        }else{
-             var respostaaux = this.transacao.status.split("#")
-                for (var i = 0; i < respostaaux.length - 1; i++) {
-                    this.retornoMessage = this.retornoMessage + "\n"+ respostaaux[i];
-                }
+       this.transacao = resposta.data
+       this.retornoMessage = `${this.transacao.status}` 
+       if(this.transacao.autorizacao){
+               this.retornoMessage = `Seu saldo é: ${this.transacao.saldo}.`       
+       })               
         }
     }
   }
