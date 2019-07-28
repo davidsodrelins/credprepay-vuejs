@@ -123,7 +123,6 @@ export default {
             this.retornoMessage = `${this.transacao.status}. Seu saldo é: ${this.transacao.saldo}.`
         }else{
              var respostaaux = this.transacao.status.split("#");
-             this.retornoMessage = "ERRO!";
                 for (var i = 0; i < respostaaux.length - 1; i++) {
                     this.retornoMessage = this.retornoMessage + "\n"+ respostaaux[i];
                 }
