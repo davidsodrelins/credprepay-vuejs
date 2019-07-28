@@ -8,28 +8,8 @@
       </form>
     </div>
 
-  
-
 <div class="cartaoForm"> 
-        <div class="logo">
-          <img src="./assets/credprepaylogo.png" height="50px" width="100%" alt="CredPrePay">
-        </div>
-        <div class="numCartao" id="container-cartao">
-            <input type="text" class="input" id="numeroCartao"  placeholder="0000 0000 0000 0000" readonly="readonly" v-model="cartao.numero">
-          </div>
-    <div class="cartaoInfo">
-      <div class="validade">
-          <input id="mesValidadeCartao" type="text" class="validadeInput" placeholder="MM/YY" readonly="readonly" v-model="cartao.validade">
-        </div>
-      <div class="cvv">
-        <input id="cvvCartao" type="text" class="cvvInput" placeholder="000" readonly="readonly" v-model="cartao.cvv">  
-        <div class="cvvLogo">?
-          <div class="logo">
-            <img src="./assets/cvv.png" height="80px" width="80px" alt="CVV">
-          </div>
-        </div>
-      </div>
-    </div>
+        
     
     <div class="titular">
         <input type="text" class="input" id="titularCartao" placeholder="NOME DO TITULAR" readonly="readonly" v-model="cartao.titular" >
