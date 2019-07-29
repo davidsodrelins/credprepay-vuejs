@@ -38,7 +38,10 @@
 
 
 
-<div class="informacao" >{{retornoMessage}}</div>
+<div v-show="retornoMessage" class="informacao" id="info">
+    
+
+</div>
 
 
 
@@ -71,7 +74,8 @@ export default {
       cartoes:[],
       cartao: {},
       transacao: {},
-      retornoMessage: 'O cartão pré pago é uma excelente forma de pagamento! Solicite agora!',
+      //retornoMessage: 'O cartão pré pago é uma excelente forma de pagamento! Solicite agora!',
+      retornoMessage: '',
       pagamento:{
         estabelecimento: '',
         valorCompra: '',
@@ -113,9 +117,30 @@ export default {
     },
     pagar(){
       Cartao.pagarCompra(this.pagamento).then(resposta=> {
-      this.transacao = resposta.data
-      this.retornoMessage = `${this.transacao.status}`
-       this.pagamento = {}
+      
+      
+        this.transacao = resposta.data
+        if(this.transacao.autorizado == 'true'){
+            this.retornoMessage = `${this.transacao.status}`
+            this.pagamento = {}
+        }else{
+            var ul = document.createElement('ul');
+            ul.setAttribute('id','ulInfo');
+            ul.setAttribute('style','list-style: none;');
+            var info = document.getElementById("info");
+            var  li = document.createElement('li');
+            this.retornoMessage = `Erro. A transação não foi realizada.`;
+            li.appendChild(document.createTextNode(this.retornoMessage));
+            ul.appendChild(li);                    
+           var erroList = this.transacao.status.split("#");
+                for (var i = 0; i < erroList.length; i++) {
+                    li = document.createElement('li');
+                    li.appendChild(document.createTextNode(erroList[i]));
+                    ul.appendChild(li);                    
+                }
+              info.appendChild(ul);
+
+        }
 
        })               
         
@@ -190,6 +215,7 @@ body{
 
 .informacao{
   display: flex;
+  text-align: left;
   position: absolute;
   top: 25%;
   left: 50%;
