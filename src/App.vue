@@ -39,8 +39,6 @@
 
 
 <div v-show="retornoMessage" class="informacao" id="info">
-    
-
 </div>
 
 
@@ -85,68 +83,81 @@ export default {
         senha: ''
 
       }
+      
     }
   },
 
+
+
   mounted() {
-    Cartao.listarCartoes().then(resposta => {
-      this.cartoes = resposta.data
-    })
+    
   },
 
 
   methods:{
       maskCC(v){
           v = v.replace(/\D/g,""); // Permite apenas dígitos
-          v = v.replace(/(\d{4})/g, "$1   "); // Coloca um ponto a cada 4 caracteres
+          v = v.replace(/(\d{4})/g, "$1 "); // Coloca um ponto a cada 4 caracteres
           v = v.replace(/\.$/, ""); // Remove o ponto se estiver sobrando
           return v;
       },
-
-     
       
     gerar(){
+      
       Cartao.gerarCartao(this.solicitacao).then(resposta=> {
-        this.solicitacao = {}
-        this.cartao = resposta.data
-        this.cartao.numero = this.maskCC(this.cartao.numero)  
-        this.retornoMessage = `Parabéns ${this.cartao.titular.split(' ')[0]}, 
-        seu cartão de crédito pré-pago foi gerado! 
-         O saldo disponível para compras é de R$ ${this.cartao.saldo} e senha é: ${this.cartao.senha}.`
-       })
+
+      var ul = document.createElement('ul');
+      var info = document.getElementById('info');
+      var li = document.createElement('li');
+      ul.setAttribute('id','ulInfo');
+      ul.setAttribute('style','list-style: none;');
+      info.innerHTML = '';
+
+      this.solicitacao = {}
+      this.cartao = resposta.data
+      this.cartao.numero = this.maskCC(this.cartao.numero)  
+      this.retornoMessage = `Parabéns ${this.cartao.titular.split(' ')[0]} 
+
+      seu cartão de crédito pré-pago foi gerado! 
+      O saldo disponível para compras é de R$ ${this.cartao.saldo} e sua senha é: ${this.cartao.senha}.`
+      
+      li.appendChild(document.createTextNode(this.retornoMessage));
+      ul.appendChild(li);
+      info.appendChild(ul);
+
+      })
     },
     pagar(){
+      var ul = document.createElement('ul');
+      var info = document.getElementById('info');
+      var li = document.createElement('li');
+      ul.setAttribute('id','ulInfo');
+      ul.setAttribute('style','list-style: none;');
+
       Cartao.pagarCompra(this.pagamento).then(resposta=> {
       
-      
-       var ul = document.createElement('ul');
-        ul.setAttribute('id','ulInfo');
-        ul.setAttribute('style','list-style: none;');
-        var info = document.getElementById("info");
-        var  li = document.createElement('li');
+        this.retornoMessage = {}
         this.transacao = resposta.data
 
         if(this.transacao.autorizado == 'true'){
-            this.retornoMessage = `${this.transacao.status}`
-            this.transacao = resposta.data
+            info.innerHTML = '';
+            this.retornoMessage = this.transacao.status
             li.appendChild(document.createTextNode(this.retornoMessage));
-            ul.appendChild(li);
+            ul.appendChild(li);    
             this.pagamento = {}
         }else{
-            
-            this.retornoMessage = `Erro. A transação não foi realizada.`;
-            li.appendChild(document.createTextNode(this.retornoMessage));
-            ul.appendChild(li);                    
+          info.innerHTML = '';          
            var erroList = this.transacao.status.split("#");
+            li.appendChild(document.createTextNode("Erro."));
+
                 for (var i = 0; i < erroList.length; i++) {
                     li = document.createElement('li');
                     li.appendChild(document.createTextNode(erroList[i]));
                     ul.appendChild(li);                    
                 }
         }
-        info.appendChild(ul);
+        info.appendChild(ul)
         this.retornoMessage = {}
-
        })               
         
     }
