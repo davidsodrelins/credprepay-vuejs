@@ -158,6 +158,7 @@ export default {
         }
         info.appendChild(ul)
         this.retornoMessage = {}
+        this.pagamento = {}
        })               
         
     }
