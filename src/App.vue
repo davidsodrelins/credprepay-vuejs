@@ -119,16 +119,21 @@ export default {
       Cartao.pagarCompra(this.pagamento).then(resposta=> {
       
       
+       var ul = document.createElement('ul');
+        ul.setAttribute('id','ulInfo');
+        ul.setAttribute('style','list-style: none;');
+        var info = document.getElementById("info");
+        var  li = document.createElement('li');
         this.transacao = resposta.data
+
         if(this.transacao.autorizado == 'true'){
             this.retornoMessage = `${this.transacao.status}`
+            this.transacao = resposta.data
+            li.appendChild(document.createTextNode(this.retornoMessage));
+            ul.appendChild(li);
             this.pagamento = {}
         }else{
-            var ul = document.createElement('ul');
-            ul.setAttribute('id','ulInfo');
-            ul.setAttribute('style','list-style: none;');
-            var info = document.getElementById("info");
-            var  li = document.createElement('li');
+            
             this.retornoMessage = `Erro. A transação não foi realizada.`;
             li.appendChild(document.createTextNode(this.retornoMessage));
             ul.appendChild(li);                    
@@ -138,9 +143,9 @@ export default {
                     li.appendChild(document.createTextNode(erroList[i]));
                     ul.appendChild(li);                    
                 }
-              info.appendChild(ul);
-
         }
+        info.appendChild(ul);
+        this.retornoMessage = {}
 
        })               
         
